@@ -12,4 +12,9 @@ https://xakep.ru/2015/04/18/195-d3-js/
 first part with
 
 http://frontender.info/vvedenie-v-djs/
+
+
 https://bost.ocks.org/mike/join/
+
+
+https://leanpub.com/D3-Tips-and-Tricks
