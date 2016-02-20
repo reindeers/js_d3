@@ -25,26 +25,39 @@
         </div>
       </div>
   <script>
-  /*var data = [{"x": 100.0, "y": 100.1}, {"x": 200.0, "y": 200.5}];*/
-
-
 
 
   var CHART_WIDTH = 500,
       CHART_HEIGHT = 300;
 
   var RADIUS = 50;
-  var X_CORD = 100, Y_CORD = 100, L = 100;
-  var ANIM_DELAY = 400;
-  var tmp = {'cnt': 0, 'a': []};
 
-  var chart_area = d3
-    .select('#chart')
-    .append('svg')
-    .attr('class', 'chart_area') 
-    .attr('width', CHART_WIDTH)   
-    .attr('height', CHART_HEIGHT)  
-  ;
+  var X_CORD = 100, 
+      Y_CORD = 100, 
+      L = 100;
+
+  var ANIM_DELAY = 400;
+
+  var cordsSettings = function(){
+    return {
+      tmp: {'cnt': 0, 'a': []},
+      compareArrays: function(arr1, arr2){
+        arr1.sort();
+        arr2.sort();
+        
+        arr1.forEach(function(entry) {
+            arr2.forEach(function(entry2){
+              if (entry == entry2) cordsSettings.tmp['a'].push(entry); cordsSettings.tmp.cnt++;})
+            });
+
+        }
+
+     
+      }
+    
+  }();
+
+  /*var tmp = {'cnt': 0, 'a': []};
 
   function compareArrays(arr1, arr2){
     arr1.sort();
@@ -58,16 +71,25 @@
     });
 
     return tmp;
-  }
+  }*/
 
-  function updateAr(arr1, arr2){ 
+  var chart_area = d3
+    .select('#chart')
+    .append('svg')
+    .attr('class', 'chart_area') 
+    .attr('width', CHART_WIDTH)   
+    .attr('height', CHART_HEIGHT)  
+  ;
+
+
+function updateAr(arr1, arr2){ 
 
  
-  compareArrays(arr1, arr2);
+  cordsSettings.compareArrays(arr1, arr2);
 
   var cords = [
                {"x": X_CORD, "y": Y_CORD, "delta": 1, "color": "#fdb462", "label": "a"}, 
-               {"x": X_CORD+L, "y": Y_CORD, "delta": tmp['cnt']*20, "color": "#d9d9d9", "label": "b"}
+               {"x": X_CORD+L, "y": Y_CORD, "delta": cordsSettings.tmp['cnt']*20, "color": "#d9d9d9", "label": "b"}
               ];
 
   var circle = chart_area.selectAll('circle')
@@ -76,7 +98,7 @@
   circle.exit().remove();
   circle.enter().append('circle').attr('r', RADIUS);
   circle
-    .attr("cx", X_CORD) // Исходная ширина элемента до начала анимации
+    .attr("cx", X_CORD) 
     .transition()
     .duration(ANIM_DELAY)
     .attr("cx", function(d) { return d.x-d.delta; })
@@ -89,22 +111,22 @@
     .transition()
     .duration(ANIM_DELAY)
     .attr("transform", function(d){return "translate("+(d.x-RADIUS-d.delta+20)+","+(d.y-RADIUS+30)+")"})
-    .style('text-anchor', 'middle') // Выравнивание текста по центру
-    .text(function(d) { return d.label; }) // Значение из исходного массива
+    .style('text-anchor', 'middle') 
+    .text(function(d) { return d.label; }) 
   ;
 
-  }
-  /*compareArrays(data1, data2);*/
+}
+
   var data1 = [7, 1, 2, 3];
   var data2 = [7, 1, 4, 6, 5];
 
   
-    var button = document.getElementsByTagName("button")[0];
-    button.addEventListener("mousedown", function(event){
+  var button = document.getElementsByTagName("button")[0];
+  button.addEventListener("mousedown", function(event){
       var unA = document.getElementById("in_basic-addon1").value;
       var unB = document.getElementById("in_basic-addon2").value;
       updateAr(data1, data2);
-    })
+  })
 
 
 
