@@ -20,12 +20,14 @@
             <input type="text" class="form-control" placeholder="Множество B" aria-describedby="basic-addon2" id="in_basic-addon2">
           </div>
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Go!</button>
+            <button class="btn btn-default" type="button" id="bGet">Go!</button>
           </span>
         </div>
       </div>
   <script>
 
+
+  
 
   var CHART_WIDTH = 500,
       CHART_HEIGHT = 300;
@@ -37,18 +39,25 @@
       L = 100;
 
   var ANIM_DELAY = 400;
-
+  var data1 = [7, 1, 2, 3];
+  var data2 = [7, 1, 4, 6, 5];
   var cordsSettings = function(){
     return {
       tmp: {'cnt': 0, 'a': []},
       compareArrays: function(arr1, arr2){
+        cordsSettings['tmp']['a'] = [];
+        cordsSettings['tmp']['cnt'] = 0;
         arr1.sort();
         arr2.sort();
         
         arr1.forEach(function(entry) {
             arr2.forEach(function(entry2){
-              if (entry == entry2) cordsSettings.tmp['a'].push(entry); cordsSettings.tmp.cnt++;})
+              if (entry == entry2) cordsSettings['tmp']['a'].push(entry); })
+              cordsSettings['tmp']['cnt']++;
+              console.log(cordsSettings['tmp']['a'] + ' ' + cordsSettings['tmp']['cnt']);
             });
+
+        cordsSettings['tmp']['a'] = [];
 
         }
 
@@ -56,22 +65,6 @@
       }
     
   }();
-
-  /*var tmp = {'cnt': 0, 'a': []};
-
-  function compareArrays(arr1, arr2){
-    arr1.sort();
-    arr2.sort();
-    
-    arr1.forEach(function(entry) {
-        arr2.forEach(function(entry2){
-          if (entry == entry2) {tmp['a'].push(entry); tmp.cnt++;}
-        });
-
-    });
-
-    return tmp;
-  }*/
 
   var chart_area = d3
     .select('#chart')
@@ -89,7 +82,7 @@ function updateAr(arr1, arr2){
 
   var cords = [
                {"x": X_CORD, "y": Y_CORD, "delta": 1, "color": "#fdb462", "label": "a"}, 
-               {"x": X_CORD+L, "y": Y_CORD, "delta": cordsSettings.tmp['cnt']*20, "color": "#d9d9d9", "label": "b"}
+               {"x": X_CORD+L, "y": Y_CORD, "delta": cordsSettings['tmp']['cnt']*20, "color": "#d9d9d9", "label": "b"}
               ];
 
   var circle = chart_area.selectAll('circle')
@@ -105,7 +98,7 @@ function updateAr(arr1, arr2){
     .attr("cy", function(d) { return d.y; })
     .attr("fill", function(d) { return d.color; })
     .style("fill-opacity", .7);
-
+  
   circle.enter().append('text')
     .attr("transform", function(d){return "translate("+0+","+(d.y-RADIUS+30)+")"})
     .transition()
@@ -117,16 +110,16 @@ function updateAr(arr1, arr2){
 
 }
 
-  var data1 = [7, 1, 2, 3];
-  var data2 = [7, 1, 4, 6, 5];
 
-  
+
+  updateAr(data1, data2);
+
   var button = document.getElementsByTagName("button")[0];
   button.addEventListener("mousedown", function(event){
       var unA = document.getElementById("in_basic-addon1").value;
       var unB = document.getElementById("in_basic-addon2").value;
-      updateAr(data1, data2);
-  })
+      updateAr(unA.split(', '), unB.split(', '));
+  });
 
 
 
