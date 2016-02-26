@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+</head>
+<body>
+      <div class="row" id="charts">
+      <div class="col-md-12" >
+        <h3>Chapter 1</h3>
+        <h1>Question for pie</h1>
+        <div class="col-md-12" id="pie_chart">
+          
+
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h3>Chapter 2</h3>
+        <h1>Some statistics</h1>
+      </div>
+      </div>
+  <script>
+  var data = {
+    lineChart : [
+      {
+        date  : '2006-02-22',
+        label : 'foo',
+        value : 950
+      },
+      {
+        date  : '2006-08-22',
+        label : 'bar',
+        value : 1000
+      },
+      {
+        date  : '2007-01-11',
+        label : 'baz',
+        value : 700
+      },
+      {
+        date  : '2008-10-01',
+        label : 'boing',
+        value : 534
+      },
+      {
+        date  : '2009-02-24',
+        label : 'loool',
+        value : 1423
+      },
+      {
+        date  : '2010-12-30',
+        label : 'YEAH',
+        value : 1222
+      },
+      {
+        date  : '2011-05-15',
+        label : 'Hurray',
+        value : 948
+      },
+      {
+        date  : '2012-04-02',
+        label : 'WTF',
+        value : 1938
+      },
+      {
+        date  : '2013-08-19',
+        label : 'OMG',
+        value : 1245
+      },
+      {
+        date  : '2013-11-11',
+        label : 'ROFL',
+        value : 888
+      }
+    ],
+    pieChart  : [
+      {
+        color       : 'red',
+        description : 'Ipsem lorem text goes here. And foo goes bar goes baz. That\'s up!!!',
+        title       : 'flowers',
+        value       : 0.62
+      },
+      {
+        color       : 'blue',
+        description : 'Another ipsem text goes here. And baz goes bar goes foo. Oh yeah, whazzz up?',
+        title       : 'trains',
+        value       : 0.38
+      }
+    ]
+  };
+
+  var WIDTH = 600,
+      HEIGHT = 600;
+  var RADIUS = 120;
+
+
+  var color = d3.scale.category10();
+
+  var arc = d3.svg.arc()
+    .outerRadius(RADIUS)
+    .innerRadius(RADIUS-40);
+     
+  var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.value; });
+
+  var pie_chart_g = d3.select("#pie_chart")
+                      .attr("class", "axis")
+                      .append('svg')
+                      .attr('width', WIDTH)
+                      .attr('height', HEIGHT)
+                      .append("g")
+                      .attr("transform", 
+                       "translate(" +(WIDTH / 2) + "," + (HEIGHT / 2 ) + ")");
+
+  var g = pie_chart_g.selectAll(".arc")
+    .data(pie(data.pieChart))
+    .enter().append("g")
+    .attr("class", "arc");  
+ 
+  g.append("path")
+    .attr("d", arc)
+    .style("fill", function(d){return d.data.color;});
+
+  </script>
+
+</body>
+</html>
