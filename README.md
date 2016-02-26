@@ -21,3 +21,7 @@ https://leanpub.com/D3-Tips-and-Tricks
 
 
 https://www.dashingd3js.com/table-of-contents
+
+pielingraph.html
+
+base on http://codepen.io/stefanjudis/pen/gkHwJ/
